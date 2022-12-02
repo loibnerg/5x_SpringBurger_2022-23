@@ -7,9 +7,23 @@
 <body>
 <h3>Welcome to Spring Burger</h3>
 <img th:src="@{/images/burger.jpg}" width="200">
+
 <h2>Design your burger</h2>
-<div th:each="ingType : ${ingredientMap.values()}">
-  <span th:text="${ingType}"></span>
-</div>
+
+<form method="post" th:object="${designBurger}">
+  <div th:each="ingType : ${ingredientMap}">
+    <h5 th:text="${ingType.getKey()}"></h5>
+    <div th:each="ingTypeValue : ${ingType.getValue()}">
+      <input type="checkbox" name="ingredients" th:value="${ingTypeValue.getId()}">
+      <span th:text="${ingTypeValue.getName()}"></span>
+    </div>
+  </div>
+  <br>
+  <label>Burger Name <input type="text" id="name" name="name" th:field="${designBurger.name}"> </label>
+  <br>
+  <br>
+  <button type="submit">Create My Burger</button>
+</form>
+
 </body>
 </html>
