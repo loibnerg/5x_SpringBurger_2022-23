@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Spring Burger</title>
+</head>
+<body>
+<h3>Welcome to Spring Burger</h3>
+<img th:src="@{/images/burger.jpg}" width="200">
+<h2>Design your burger</h2>
+<div th:each="ingType : ${ingredientMap.values()}">
+  <span th:text="${ingType}"></span>
+</div>
+</body>
+</html>
