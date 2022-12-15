@@ -3,14 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <title>Spring Burger</title>
+  <style>
+    .error{
+      color: red;
+      background-color: yellow;
+    }
+  </style>
 </head>
 <body>
 <h3>Welcome to Spring Burger</h3>
 <img th:src="@{/images/burger.jpg}" width="200">
 
+<h4 th:if="${!burgerList.isEmpty()}">All Burgers</h4>
+<div>
+  <ul>
+    <li th:each="burger:${burgerList}">
+      <span th:text="${burger.getName()}"></span>
+      <span th:text="${burger.getIngredients()}"></span>
+    </li>
+  </ul>
+</div>
+
 <h2>Design your burger</h2>
 
 <form method="post" th:object="${designBurger}">
+  <div th:if="${#fields.hasErrors('ingredients')}">
+    <span class="error" th:text="${#fields.errors('ingredients')}"></span>
+  </div>
   <div th:each="ingType : ${ingredientMap}">
     <h5 th:text="${ingType.getKey()}"></h5>
     <div th:each="ingTypeValue : ${ingType.getValue()}">
@@ -23,7 +42,13 @@
   <br>
   <br>
   <button type="submit">Create My Burger</button>
+
+  <div th:if="${#fields.hasErrors('name')}">
+    <span class="error" th:text="${#fields.errors('name')}"></span>
+  </div>
 </form>
+
+
 
 </body>
 </html>
