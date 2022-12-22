@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Burger Order</title>
 </head>
 <body>
+
+<h1>Order your Burger</h1>
+
+<p>Your Burgers:</p>
+<ul>
+  <li th:each="b: ${order.getBurgerList()}"><span th:text="${b.getName()}"></span></li>
+</ul>
+
+<form method="post" th:object="${order}">
+
+  <label for="tfFullname">Fullname: </label><input type="text" name="tfFullname" id="tfFullname" th:field="${order.fullname}">
+  <label for="tfStreet">Street: </label><input type="text" name="tfStreet" id="tfStreet" th:field="${order.street}">
+  <label for="tfCity">City: </label><input type="text" name="tfCity" id="tfCity" th:field="${order.city}">
+
+  <button th:formaction="@{/burger}" th:formmethod="get">Add another 🍔</button>
+  <button th:formaction="@{/order}" th:formmethod="post">Deliver my burger 🏎️</button>
+</form>
 
 </body>
 </html>

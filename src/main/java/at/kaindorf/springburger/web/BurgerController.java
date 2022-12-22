@@ -5,6 +5,7 @@ import at.kaindorf.springburger.data.IngredientRepository;
 import at.kaindorf.springburger.pojos.Burger;
 import at.kaindorf.springburger.pojos.Ingredient;
 import at.kaindorf.springburger.pojos.IngredientType;
+import at.kaindorf.springburger.pojos.Order;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -30,6 +32,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @Slf4j
 @RequestMapping("/burger")
 @RequiredArgsConstructor
+@SessionAttributes({"designBurger","order"})
 public class BurgerController {
 
 //  private static final Map<IngredientType, List<Ingredient>> ingredientMap = new HashMap<>();
@@ -79,6 +82,9 @@ public class BurgerController {
     log.info("Set Design Burger Attribute");
     model.addAttribute("designBurger", new Burger());
 
+    if(model.getAttribute("order") == null)
+      model.addAttribute("order", new Order());
+
     model.addAttribute("burgerList", burgerRepository.findAll());
   }
 
@@ -89,7 +95,7 @@ public class BurgerController {
 
   @PostMapping
   public ModelAndView createBurger(
-      RedirectAttributes attributes,
+      // RedirectAttributes attributes,   replaced by SessionAttributes
       @Valid @ModelAttribute("designBurger") Burger fromDesignForm,
       Errors errors){
 
@@ -105,8 +111,9 @@ public class BurgerController {
     //Burger b = fromDesignForm.createBurger(ingredients);
     //log.info(b.toString());
 
-    log.info("add flash attribute: " + fromDesignForm);
-    attributes.addFlashAttribute("createBurger", fromDesignForm);
+    // replaced by SessionAttributes
+    //log.info("add flash attribute: " + fromDesignForm);
+    //attributes.addFlashAttribute("createBurger", fromDesignForm);
 
     return new ModelAndView("redirect:/order");
   }
